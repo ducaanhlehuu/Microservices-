@@ -6,6 +6,8 @@ import com.eazybytes.accounts.dto.CustomerDTO;
 import com.eazybytes.accounts.dto.ErrorResponseDto;
 import com.eazybytes.accounts.dto.ResponseDTO;
 import com.eazybytes.accounts.service.IAccountService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -26,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api",produces = {MediaType.APPLICATION_JSON_VALUE})
 @Validated
 public class AccountController {
-
+    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
     @Value("${build.version}")
     private String buildVersion;
 
@@ -83,13 +87,29 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDTO(AccountConstants.STATUS_500,AccountConstants.MESSAGE_500));
     }
 
+
+    @Retry(name = "getBuildInfo", fallbackMethod = "getBuildInfoFallback")
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo(){
-        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+        logger.debug("getBuildInfo");
+        throw new NullPointerException();
+//        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 
+    @RateLimiter(name = "getJavaVersion", fallbackMethod = "getJavaVersionFallback")
     @GetMapping("/java-version")
-    public ResponseEntity<String> getJavav(){
-        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    public ResponseEntity<String> getJavaVersion(){
+        return ResponseEntity.status(HttpStatus.OK).body("Java 8 \n");
+    }
+
+
+    public ResponseEntity<String> getBuildInfoFallback(Throwable throwable){
+        logger.debug("getBuildInfoFallBack");
+        return ResponseEntity.status(HttpStatus.OK).body("build info fall back ne");
+    }
+
+    public ResponseEntity<String> getJavaVersionFallback(Throwable throwable){
+        logger.debug("getJavaVersionFallback");
+        return ResponseEntity.status(HttpStatus.OK).body("java version fall back ne");
     }
 }

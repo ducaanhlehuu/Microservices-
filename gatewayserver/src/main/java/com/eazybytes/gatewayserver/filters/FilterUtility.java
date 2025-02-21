@@ -14,6 +14,7 @@ public class FilterUtility {
     public String getCorrelationId(HttpHeaders requestHeaders) {
         if (requestHeaders.get(CORRELATION_ID) != null) {
             List<String> requestHeaderList = requestHeaders.get(CORRELATION_ID);
+            System.out.println(requestHeaderList.toString());
             return requestHeaderList.stream().findFirst().get();
         } else {
             return null;

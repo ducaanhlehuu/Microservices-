@@ -15,14 +15,6 @@
         <module name="loans" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="accounts" target="17" />
-      <module name="cards" target="17" />
-      <module name="configserver" target="17" />
-      <module name="eurekaserver" target="17" />
-      <module name="gatewayserver" target="17" />
-      <module name="loans" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

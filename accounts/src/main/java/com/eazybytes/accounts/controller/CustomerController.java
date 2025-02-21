@@ -25,7 +25,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path="/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Validated
-public class CustomerController {
+public class
+CustomerController {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
     private final ICustomersService iCustomersService;

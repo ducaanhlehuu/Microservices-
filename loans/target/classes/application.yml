@@ -3,11 +3,21 @@ server:
 spring:
   application:
     name: loans
+#  datasource:
+#    url: jdbc:mysql://localhost:3307/loansdb
+#    username: root
+#    password: root
+#  jpa:
+#    show-sql: true
   datasource:
-    url: jdbc:mysql://localhost:3307/loansdb
-    username: root
-    password: root
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
     show-sql: true
   sql:
     init:

@@ -167,5 +167,11 @@ public class LoansController {
                     .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
         }
     }
-
+    @GetMapping("/contact-info")
+    public ResponseEntity<String> getContactInfo() {
+        logger.debug("Invoked Loans contact-info API");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("loansContactInfoDto kkkkkkkkkkkkkkkkkkk");
+    }
 }
