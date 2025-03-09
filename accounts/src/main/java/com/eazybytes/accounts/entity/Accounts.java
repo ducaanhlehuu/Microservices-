@@ -15,5 +15,8 @@ public class Accounts extends BaseEntity{
     private String accountType;
     private String branchAddress;
 
+    @Column(name = "communication_sw")
+    private Boolean communicationSw;
+
 
 }

@@ -1,5 +1,7 @@
 package com.eazybytes.gatewayserver.config;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
 
 public class KeycloakRoleConverter  implements Converter<Jwt, Collection<GrantedAuthority>> {
 
+    private static final Log log = LogFactory.getLog(KeycloakRoleConverter.class);
+
     @Override
     public Collection<GrantedAuthority> convert(Jwt source) {
         Map<String, Object> realmAccess = (Map<String, Object>) source.getClaims().get("realm_access");
@@ -23,6 +27,7 @@ public class KeycloakRoleConverter  implements Converter<Jwt, Collection<Granted
                 .stream().map(roleName -> "ROLE_" + roleName)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+        log.debug("log hehe " + returnValue.toString() + " - - " );
         return returnValue;
     }
 
